@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      
+      header {
+        background-color: #f4f4f4;
+        padding: 1rem;
+        text-align: center;
+      }
+      
+      main {
+        padding: 2rem;
+      }
+      
+      #tasks {
+        margin-top: 2rem;
+      }
+      
+      .task-item {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background: #f9f9f9;
+      }      
+  </style>
+  <title>Technical Project Management</title>
+</head>
+<body>
+  <header>
+    <h1 id="project-title"></h1>
+  </header>
+  <main>
+    <section id="description">
+      <p id="short-description"></p>
+    </section>
+    <section id="tasks">
+      <h2>Tasks</h2>
+      <div id="task-list"></div>
+    </section>
+  </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const projectDataUrl = "https://dev.deepthought.education/assets/uploads/files/files/others/ddugky_project.json";
+      
+        // Fetch JSON data
+        fetch(projectDataUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            populatePage(data);
+          })
+          .catch((error) => console.error("Error loading project data:", error));
+      });
+      
+      function populatePage(data) {
+        // Set project title
+        document.getElementById("project-title").textContent = data.title;
+      
+        // Set description
+        document.getElementById("short-description").innerHTML = data.short_description;
+      
+        // Populate tasks
+        const tasksContainer = document.getElementById("task-list");
+        data.tasks.forEach((task) => {
+          const taskItem = document.createElement("div");
+          taskItem.className = "task-item";
+          taskItem.innerHTML = `
+            <h3>${task.task_title}</h3>
+            <p>${task.task_description}</p>
+          `;
+          tasksContainer.appendChild(taskItem);
+        });
+      }      
+  </script>
+</body>
+</html>
